@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端陽競渡 - 龍舟文化與儀式互動教學網頁</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Noto Serif TC', 'serif'],
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        festival: {
+                            red: '#9B1C1C',    /* 硃砂紅 */
+                            gold: '#D69E2E',   /* 祥雲金 */
+                            green: '#065F46',  /* 翡翠綠 */
+                            blue: '#1E3A8A',   /* 深潭藍 */
+                            sand: '#FDFBF7'    /* 宣紙白 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            font-size: 18px; /* 將基礎字體由 16px 提升至 18px，讓文字預設更清晰 */
+            transition: font-size 0.25s ease-in-out;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FDFBF7;
+            scroll-behavior: smooth;
+        }
+        .text-shadow-elegant {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+        }
+        /* 龍舟水波動畫 */
+        @keyframes wave {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(1deg); }
+        }
+        .animate-boat {
+            animation: wave 4s ease-in-out infinite;
+        }
+        @keyframes wave-bg {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-25%); }
+            100% { transform: translateX(0); }
+        }
+        .animate-wave-slow {
+            animation: wave-bg 20s linear infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-800 selection:bg-festival-red selection:text-white">
+
+    <!-- 頂部導覽列 -->
+    <nav class="sticky top-0 z-50 bg-festival-sand/90 backdrop-blur-md border-b border-festival-gold/20 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">🐉</span>
+                    <span class="font-serif font-bold text-xl tracking-wider text-festival-red">端陽競渡</span>
+                </div>
+                <!-- 桌面版選單與字體控制 -->
+                <div class="hidden md:flex items-center space-x-8 font-medium">
+                    <a href="#intro" class="text-slate-700 hover:text-festival-red transition-colors">文化源起</a>
+                    <a href="#ritual" class="text-slate-700 hover:text-festival-red transition-colors">四大儀式</a>
+                    <a href="#customs" class="text-slate-700 hover:text-festival-red transition-colors">民俗禁忌</a>
+                    <a href="#videos" class="text-slate-700 hover:text-festival-red transition-colors">運動教室101</a>
+                    <a href="#quiz" class="text-slate-700 hover:text-festival-red transition-colors">文化大挑戰</a>
+                    
+                    <!-- 字體放大控制項 -->
+                    <div class="flex items-center space-x-1 bg-stone-100 p-1 rounded-xl border border-stone-200 text-xs font-bold">
+                        <span class="text-stone-500 px-1"><i class="fa-solid fa-font mr-1"></i>字體:</span>
+                        <button onclick="changeFontSize('small')" id="btn-font-s" class="px-2.5 py-1 rounded-lg bg-white text-stone-800 shadow-sm border border-stone-200/50 transition-all">標準</button>
+                        <button onclick="changeFontSize('medium')" id="btn-font-m" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-700 transition-all">中</button>
+                        <button onclick="changeFontSize('large')" id="btn-font-l" class="px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-700 transition-all">大</button>
+                    </div>
+                </div>
+                <!-- 行動版字體控制與選單按鈕 -->
+                <div class="flex items-center space-x-2 md:hidden">
+                    <!-- 行動版字體控制 -->
+                    <div class="flex items-center space-x-1 bg-stone-100 p-0.5 rounded-lg border border-stone-200 text-[11px] font-bold">
+                        <button onclick="changeFontSize('small')" id="btn-font-s-mob" class="px-2 py-0.5 rounded bg-white text-stone-800 shadow-sm border border-stone-200/50">標準</button>
+                        <button onclick="changeFontSize('medium')" id="btn-font-m-mob" class="px-2 py-0.5 rounded text-stone-500">中</button>
+                        <button onclick="changeFontSize('large')" id="btn-font-l-mob" class="px-2 py-0.5 rounded text-stone-500">大</button>
+                    </div>
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-festival-red focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 行動版下拉選單 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-festival-sand border-b border-festival-gold/20 px-4 pt-2 pb-4 space-y-2">
+            <a href="#intro" class="block px-3 py-2 rounded-md hover:bg-festival-red/5 text-slate-700 hover:text-festival-red transition-colors" onclick="toggleMenu()">文化源起</a>
+            <a href="#ritual" class="block px-3 py-2 rounded-md hover:bg-festival-red/5 text-slate-700 hover:text-festival-red transition-colors" onclick="toggleMenu()">四大儀式</a>
+            <a href="#customs" class="block px-3 py-2 rounded-md hover:bg-festival-red/5 text-slate-700 hover:text-festival-red transition-colors" onclick="toggleMenu()">民俗禁忌</a>
+            <a href="#videos" class="block px-3 py-2 rounded-md hover:bg-festival-red/5 text-slate-700 hover:text-festival-red transition-colors" onclick="toggleMenu()">運動教室101</a>
+            <a href="#quiz" class="block px-3 py-2 rounded-md hover:bg-festival-red/5 text-slate-700 hover:text-festival-red transition-colors" onclick="toggleMenu()">文化大挑戰</a>
+        </div>
+    </nav>
+
+    <!-- 英雄展示區 (Hero Section) -->
+    <header class="relative overflow-hidden bg-gradient-to-b from-festival-blue to-festival-green text-white py-20 lg:py-32 px-4">
+        <!-- 裝飾背景雲朵與波浪 -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#ffffff" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,117.3C960,107,1056,149,1152,154.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+        
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <span class="inline-block bg-festival-gold/20 text-festival-gold border border-festival-gold/30 px-4 py-1.5 rounded-full text-sm font-medium tracking-widest uppercase mb-4">
+                五月五・慶端陽
+            </span>
+            <h1 class="font-serif font-black text-4xl sm:text-5xl lg:text-7xl tracking-widest text-shadow-elegant text-festival-gold mb-6 leading-tight">
+                划龍舟文化教學互動網
+            </h1>
+            <p class="max-w-3xl mx-auto text-base sm:text-lg lg:text-xl text-stone-100 font-light leading-relaxed mb-12 px-2">
+                划龍舟是東亞地區端午節的核心傳統習俗，蘊含深厚的體育競技精神與豐富的祭祀儀式。
+                讓我們一起穿梭古今，探索「起龍、採青、競渡、藏龍」的神祕儀式，並全方位解析現代龍舟運動！
+            </p>
+            
+            <!-- 龍舟 SVG 動畫 -->
+            <div class="relative w-full max-w-lg mx-auto h-40 flex items-center justify-center animate-boat mb-8">
+                <!-- 龍舟主體 -->
+                <svg viewBox="0 0 500 150" class="w-full h-auto drop-shadow-lg">
+                    <!-- 龍頭 -->
+                    <path d="M420,50 Q450,10 470,25 Q480,35 460,50 Q490,45 480,65 Q460,75 430,70 L420,68 Z" fill="#D69E2E" stroke="#9B1C1C" stroke-width="2"/>
+                    <path d="M460,30 Q465,35 460,40" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                    <circle cx="455" cy="35" r="3" fill="#000000"/>
+                    <path d="M465,45 Q485,55 460,60" fill="#9B1C1C"/>
+                    <path d="M435,50 L450,52 L432,58 Z" fill="#22C55E"/> <!-- 採青綠葉 -->
+                    <!-- 船體 -->
+                    <path d="M100,80 Q250,110 420,70 Q400,105 250,105 Q100,105 80,80 Z" fill="#9B1C1C" stroke="#D69E2E" stroke-width="2"/>
+                    <path d="M80,80 Q60,50 50,60 Q45,70 70,85 Z" fill="#D69E2E" stroke="#9B1C1C" stroke-width="2"/> <!-- 龍尾 -->
+                    <!-- 槳手 (簡化剪影) -->
+                    <circle cx="160" cy="70" r="8" fill="#FDE047"/>
+                    <line x1="160" y1="78" x2="150" y2="105" stroke="#FDE047" stroke-width="3"/>
+                    <circle cx="210" cy="70" r="8" fill="#FDE047"/>
+                    <line x1="210" y1="78" x2="200" y2="105" stroke="#FDE047" stroke-width="3"/>
+                    <circle cx="260" cy="70" r="8" fill="#FDE047"/>
+                    <line x1="260" y1="78" x2="250" y2="105" stroke="#FDE047" stroke-width="3"/>
+                    <circle cx="310" cy="70" r="8" fill="#FDE047"/>
+                    <line x1="310" y1="78" x2="300" y2="105" stroke="#FDE047" stroke-width="3"/>
+                    <!-- 鼓手 -->
+                    <circle cx="360" cy="65" r="8" fill="#FDE047"/>
+                    <path d="M360,73 Q365,85 360,95" stroke="#FDE047" stroke-width="3" fill="none"/>
+                    <rect x="370" y="75" width="15" height="20" fill="#EF4444" rx="2"/> <!-- 鼓 -->
+                    <!-- 浪花特效 -->
+                    <path d="M50,100 Q80,95 110,105 Q140,115 170,100 Q200,90 230,105 Q260,120 290,100 Q320,85 350,105 Q380,125 410,105 Q440,90 470,105" fill="none" stroke="#38BDF8" stroke-width="4" stroke-dasharray="10, 5"/>
+                </svg>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#videos" class="bg-festival-gold hover:bg-yellow-600 text-stone-900 font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 transform hover:-translate-y-1">
+                    <i class="fa-solid fa-circle-play mr-2"></i> 觀看龍舟運動影片
+                </a>
+                <a href="#ritual" class="bg-transparent hover:bg-white/10 text-white border border-white/50 hover:border-white font-semibold px-8 py-4 rounded-full transition-all duration-300">
+                    探索傳統儀式
+                </a>
+            </div>
+        </div>
+        
+        <!-- 波浪底部分割線 -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
+            <svg class="relative block w-[200%] h-[40px] animate-wave-slow" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C26.9,8.75,54.05,18.06,82.12,25.92,152.12,45.6,223,58.64,321.39,56.44Z" fill="#FDFBF7"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Section 1: 文化源起與概述 -->
+    <section id="intro" class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="font-serif font-black text-3xl sm:text-4xl text-festival-red tracking-wider mb-4">歷史傳承與現代發展</h2>
+            <div class="w-24 h-1 bg-festival-gold mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <p class="text-lg leading-relaxed text-slate-700">
+                    <strong class="text-festival-red text-xl">划龍舟</strong>（又稱扒龍舟、賽龍舟）是東亞地區端午節的核心傳統習俗。
+                    在久遠的歷史演變中，這項運動不僅是一場速度與力量的博弈，更承載著深厚的人文底蘊與地方信仰。
+                </p>
+                
+                <div class="bg-stone-50 border-l-4 border-festival-gold p-6 rounded-r-lg space-y-4">
+                    <h3 class="font-bold text-lg text-festival-green flex items-center">
+                        <i class="fa-solid fa-book-open mr-2"></i> 起源傳說
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        主要為了紀念戰國時期投江的愛國詩人<strong>屈原</strong>。相傳屈原投江後，人們爭相划船尋求其軀體，敲鑼打鼓以嚇跑魚蝦。
+                        而在部分地區，賽龍舟更與當地的水神信仰相結合，用以<strong>祈求風調雨順、驅除瘟疫與送邪避凶</strong>。
+                    </p>
+                </div>
+
+                <div class="flex items-center space-x-4 p-4 bg-festival-red/5 rounded-lg border border-festival-red/10">
+                    <span class="text-4xl">🏅</span>
+                    <div>
+                        <h4 class="font-bold text-festival-red">體育與祭祀的完美結合</h4>
+                        <p class="text-slate-600 text-sm">現代龍舟已躍上國際舞台，成為一項風靡全球、講求極致團隊默契的現代體育競技運動。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側插圖/資訊卡片 -->
+            <div class="relative bg-gradient-to-br from-festival-green/10 to-festival-gold/10 p-8 rounded-2xl border border-festival-gold/20 shadow-inner">
+                <h3 class="font-serif text-2xl font-bold text-festival-green mb-6 text-center">龍舟三大核心元素</h3>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-festival-red text-white p-3 rounded-lg mt-1">
+                            <i class="fa-solid fa-hands-holding-child"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">祭祀精神 (Ritual)</h4>
+                            <p class="text-slate-600 text-sm">包含「起龍、開光、採青、藏龍」等一整套嚴格的敬神與謝神科儀。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-festival-gold text-stone-900 p-3 rounded-lg mt-1">
+                            <i class="fa-solid fa-people-group"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">團隊默契 (Teamwork)</h4>
+                            <p class="text-slate-600 text-sm">鼓手為靈魂控制節奏，舵手把控方向，划手整齊划一，體現「同舟共濟」的力量。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-festival-blue text-white p-3 rounded-lg mt-1">
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">與水的連結 (Water Bond)</h4>
+                            <p class="text-slate-600 text-sm">龍船水帶有平安、健康的祝福。人們相信接觸、暢游龍船水能驅除病痛、帶來祥瑞。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: 四大儀式與流程互動區 -->
+    <section id="ritual" class="py-16 bg-stone-50 border-t border-b border-festival-gold/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <span class="text-sm font-bold uppercase tracking-widest text-festival-gold">四大階段</span>
+                <h2 class="font-serif font-black text-3xl sm:text-4xl text-festival-red tracking-wider mt-1 mb-4">龍舟傳統儀式與流程</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">點擊下方各個儀式階段，探索傳承百年的神聖步驟與文化細節。</p>
+                <div class="w-24 h-1 bg-festival-gold mx-auto mt-4"></div>
+            </div>
+
+            <!-- 互動選項卡 (Tabs) -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto mb-10">
+                <button onclick="switchRitual(0)" id="btn-tab-0" class="tab-btn p-4 rounded-xl font-serif text-lg font-bold border transition-all duration-300 flex flex-col items-center gap-2 bg-white text-slate-700 border-stone-200 hover:border-festival-red shadow-sm">
+                    <span class="text-3xl">🐉</span>
+                    <span>1. 起龍／祭江</span>
+                </button>
+                <button onclick="switchRitual(1)" id="btn-tab-1" class="tab-btn p-4 rounded-xl font-serif text-lg font-bold border transition-all duration-300 flex flex-col items-center gap-2 bg-white text-slate-700 border-stone-200 hover:border-festival-red shadow-sm">
+                    <span class="text-3xl">🌿</span>
+                    <span>2. 採青參神</span>
+                </button>
+                <button onclick="switchRitual(2)" id="btn-tab-2" class="tab-btn p-4 rounded-xl font-serif text-lg font-bold border transition-all duration-300 flex flex-col items-center gap-2 bg-white text-slate-700 border-stone-200 hover:border-festival-red shadow-sm">
+                    <span class="text-3xl">🛶</span>
+                    <span>3. 奮勇競渡</span>
+                </button>
+                <button onclick="switchRitual(3)" id="btn-tab-3" class="tab-btn p-4 rounded-xl font-serif text-lg font-bold border transition-all duration-300 flex flex-col items-center gap-2 bg-white text-slate-700 border-stone-200 hover:border-festival-red shadow-sm">
+                    <span class="text-3xl">⚓</span>
+                    <span>4. 藏龍妥存</span>
+                </button>
+            </div>
+
+            <!-- 儀式詳情內容展示區 -->
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-festival-gold/10 overflow-hidden transform transition-all duration-500">
+                <div id="ritual-content" class="p-6 sm:p-10 md:grid md:grid-cols-5 md:gap-8 items-center">
+                    <!-- 動態替換區 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: 文化與獨特習俗 (卡片區) -->
+    <section id="customs" class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="font-serif font-black text-3xl sm:text-4xl text-festival-red tracking-wider mb-4">龍舟民俗與文化趣聞</h2>
+            <div class="w-24 h-1 bg-festival-gold mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- 卡片 1: 驅邪避凶 -->
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 p-8 hover:shadow-xl hover:border-festival-red/20 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="text-4xl mb-4 text-festival-red">🏮</div>
+                    <h3 class="font-serif font-bold text-xl text-slate-800 mb-3">驅邪與避瘟之說</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        端午節時值仲夏，自古被視為「惡月惡日」，此時天氣炎熱、疫病易生。划龍舟敲鑼打鼓、喧天聲響的初衷，除了嚇走魚蝦以保護屈原遺體，在各地更具有驅除水中厲鬼、掃除瘟疫與求取平安的神祕宗教功能。
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 text-xs text-festival-gold font-semibold">
+                    #傳統民俗 #驅邪避瘟
+                </div>
+            </div>
+
+            <!-- 卡片 2: 游龍船水 -->
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 p-8 hover:shadow-xl hover:border-festival-red/20 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="text-4xl mb-4 text-festival-blue">🌊</div>
+                    <h3 class="font-serif font-bold text-xl text-slate-800 mb-3">游龍船水吉兆</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        在香港部分臨海地區（如大澳、長洲、西貢等），「游龍船水」是端午節極為重要的儀式。長輩們深信龍舟划過的海水飽含「龍氣」與祥瑞，若在端午當天游龍船水，不但可以強身健體、驅除皮膚疾病，更能為一整年帶來平安與好運。
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 text-xs text-festival-blue font-semibold">
+                    #香港非物質文化遺產 #游龍船水
+                </div>
+            </div>
+
+            <!-- 卡片 3: 傳統禁忌與現代轉變 -->
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 p-8 hover:shadow-xl hover:border-festival-red/20 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="text-4xl mb-4 text-festival-gold">⚖️</div>
+                    <h3 class="font-serif font-bold text-xl text-slate-800 mb-3">男女禁忌與現代平權</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        在過去，傳統龍舟被奉為極神聖的法器。下水與儀式期間有著諸多嚴格禁忌，例如未點睛前不得接觸、女性被禁止登舟或跨越龍舟。但隨著現代體育平權精神發展，現今多數國際及公開賽事已全面開放，男女攜手同舟競渡，展現平權新姿態。
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-stone-100 text-xs text-festival-green font-semibold">
+                    #禁忌與變遷 #體育精神
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: 影音教室 101 (龍舟運動解析) -->
+    <section id="videos" class="py-16 bg-stone-50 border-t border-b border-festival-gold/15">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <span class="text-sm font-bold uppercase tracking-widest text-festival-blue">影音講堂</span>
+                <h2 class="font-serif font-black text-3xl sm:text-4xl text-festival-red tracking-wider mt-1 mb-4">龍舟運動教室 101</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">由專業教練親身示範，從基本物理學、槳手配置，到水上實戰術語，全方位解析現代龍舟運動！</p>
+                <div class="w-24 h-1 bg-festival-gold mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <!-- 影片一 -->
+                <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-video w-full bg-black">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/3m2g_EULm1w" title="【運動教室 101】第三十八集：龍舟 (I)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block bg-festival-red/10 text-festival-red text-xs px-2.5 py-1 rounded-full font-bold mb-3">第一集：構造與角色配置</span>
+                            <h3 class="font-serif font-bold text-xl text-slate-800 mb-3">龍舟基本功：船身力學與槳手分工</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                                本集專業教練將帶大家認識龍舟的物理結構：包括在逆風及逆流情況下划行的影響、吃水深度與阻力的關係，並深度剖析槳手（前、中、後段選手）的關鍵定位與鼓手、舵手的團隊節奏配合。
+                            </p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-4 flex items-center justify-between text-xs text-slate-500">
+                            <span><i class="fa-regular fa-clock mr-1"></i> 片長：6 分鐘 44 秒</span>
+                            <span>提供者：101 academy入門教室</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 影片二 -->
+                <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-video w-full bg-black">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/lLqT45DSYeY" title="【運動教室 101】第三十八集：龍舟 (II)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block bg-festival-green/10 text-festival-green text-xs px-2.5 py-1 rounded-full font-bold mb-3">第二集：實戰技巧與術語</span>
+                            <h3 class="font-serif font-bold text-xl text-slate-800 mb-3">水上實戰精華：起航衝刺與操控技巧</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                                進入更進階的水上教學！教練細緻講解了槳手起錨至全速衝刺的動作細節、保持隊形不紊亂的秘密，並帶領觀眾走入實戰環境，透過快問快答解讀龍舟隊專屬的口號與配合術語。
+                            </p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-4 flex items-center justify-between text-xs text-slate-500">
+                            <span><i class="fa-regular fa-clock mr-1"></i> 片長：4 分鐘 53 秒</span>
+                            <span>提供者：101 academy入門教室</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 影片術語小字典筆記 -->
+            <div class="bg-gradient-to-br from-festival-red/5 to-festival-gold/5 rounded-3xl p-6 sm:p-8 border border-festival-gold/20 max-w-5xl mx-auto">
+                <h4 class="font-serif font-bold text-xl text-festival-red mb-6 flex items-center justify-center sm:justify-start gap-2">
+                    <span class="text-2xl">📝</span> 影片重點：龍舟運動專業術語小辭典
+                </h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200/60 shadow-sm">
+                        <div class="text-festival-red font-black text-lg font-serif mb-2 flex items-center gap-2">
+                            <span class="bg-festival-red text-white text-xs px-2 py-0.5 rounded">打頭</span>
+                            <span>Da Tau</span>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            指龍舟前方的「頭槳手」需要將龍舟龍頭方向，重新修正並指向<strong>賽道的中間線</strong>。因為龍舟在行駛中極易受到側風或亂流水流影響，頭槳手需敏銳調整以使龍舟直線前進。
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200/60 shadow-sm">
+                        <div class="text-festival-green font-black text-lg font-serif mb-2 flex items-center gap-2">
+                            <span class="bg-festival-green text-white text-xs px-2 py-0.5 rounded">操龍</span>
+                            <span>Cho Lung</span>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            意指將所有龍舟器材裝配好，全體隊員齊集<strong>在水上進行實地划舟訓練</strong>，這也是訓練隊伍合作默契、培養水感以及調整划槳節奏的最核心環節。
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200/60 shadow-sm">
+                        <div class="text-festival-blue font-black text-lg font-serif mb-2 flex items-center gap-2">
+                            <span class="bg-festival-blue text-white text-xs px-2 py-0.5 rounded">開大</span>
+                            <span>Hoi Dai</span>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            是指在龍舟正式行駛、實操或賽事期間，隊員合力使出最大力量划擊槳水，全力全速將龍舟推進，屬於戰術性加速與爆發衝刺的代名詞。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: 文化知識問答大挑戰 -->
+    <section id="quiz" class="py-16 px-4 max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="text-sm font-bold uppercase tracking-widest text-festival-gold">隨堂測試</span>
+            <h2 class="font-serif font-black text-3xl sm:text-4xl text-festival-red tracking-wider mt-1 mb-4">龍舟文化大挑戰</h2>
+            <p class="text-slate-600 text-sm sm:text-base">閱讀完以上豐富介紹，來測測看你吸收了多少有趣的文化知識吧！</p>
+            <div class="w-24 h-1 bg-festival-gold mx-auto mt-4"></div>
+        </div>
+
+        <!-- 答題面板 -->
+        <div class="bg-white rounded-3xl shadow-xl border border-stone-200 overflow-hidden">
+            <!-- 進度條 -->
+            <div class="bg-slate-100 h-2 w-full">
+                <div id="quiz-progress-bar" class="bg-festival-red h-full w-0 transition-all duration-500"></div>
+            </div>
+
+            <div class="p-6 sm:p-10">
+                <!-- 題目展示區 -->
+                <div id="quiz-container">
+                    <!-- 動態載入 -->
+                </div>
+
+                <!-- 回饋訊息 -->
+                <div id="quiz-feedback" class="hidden mt-6 p-4 rounded-xl font-medium text-center">
+                    <!-- 動態載入回饋 -->
+                </div>
+
+                <!-- 控制鈕 -->
+                <div class="mt-8 flex justify-between items-center">
+                    <span id="quiz-step-text" class="text-sm text-slate-500 font-medium">第 1 / 4 題</span>
+                    <button id="quiz-next-btn" onclick="nextQuestion()" class="hidden bg-festival-red hover:bg-red-800 text-white font-bold py-2.5 px-6 rounded-xl transition-all duration-300">
+                        下一題 <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+    <!-- 行動選單與字體控制邏輯 -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function toggleMenu() {
+            mobileMenu.classList.add('hidden');
+        }
+
+        // 頁面字體縮放核心功能
+        function changeFontSize(size) {
+            const html = document.documentElement;
+            
+            // 桌面版按鈕
+            const btnS = document.getElementById('btn-font-s');
+            const btnM = document.getElementById('btn-font-m');
+            const btnL = document.getElementById('btn-font-l');
+            
+            // 行動版按鈕
+            const btnSMob = document.getElementById('btn-font-s-mob');
+            const btnMMob = document.getElementById('btn-font-m-mob');
+            const btnLMob = document.getElementById('btn-font-l-mob');
+            
+            // 重設按鈕樣式
+            const normalClass = "px-2.5 py-1 rounded-lg text-stone-500 hover:text-stone-700 transition-all";
+            const activeClass = "px-2.5 py-1 rounded-lg bg-white text-stone-800 shadow-sm border border-stone-200/50 font-bold transition-all";
+            
+            const normalClassMob = "px-2 py-0.5 rounded text-stone-500 transition-all";
+            const activeClassMob = "px-2 py-0.5 rounded bg-white text-stone-800 shadow-sm border border-stone-200/50 font-bold transition-all";
+
+            [btnS, btnM, btnL].forEach(btn => btn.className = normalClass);
+            [btnSMob, btnMMob, btnLMob].forEach(btn => btn.className = normalClassMob);
+
+            if (size === 'small') {
+                html.style.fontSize = '18px'; // 標準加大版 (適合一般閱讀)
+                btnS.className = activeClass;
+                btnSMob.className = activeClassMob;
+            } else if (size === 'medium') {
+                html.style.fontSize = '20px'; // 舒適中等版
+                btnM.className = activeClass;
+                btnMMob.className = activeClassMob;
+            } else if (size === 'large') {
+                html.style.fontSize = '22px'; // 超級清晰大版 (投影/視力不便者首選)
+                btnL.className = activeClass;
+                btnLMob.className = activeClassMob;
+            }
+        }
+    </script>
+
+    <!-- 儀式詳情內容資料庫與切換 -->
+    <script>
+        const rituals = [
+            {
+                title: "1. 起龍與祭江 (Dragon Awakening)",
+                emoji: "🐉",
+                desc: "在端午節之前，各村落會將往年沉沒在水底河泥中保護的龍舟挖出。洗淨污泥後，選取良辰吉日進行隆重的「起龍」和「開光點睛」儀式。人們會將硃砂、雞血（現多用硃砂、紅墨代替）調和，在神像前為龍頭進行開光點睛，口中誦唸祝詞，祈求全體選手和競渡活動能出入平安、吉祥順利。",
+                fact: "為什麼要沉入泥中？傳統木製龍舟如果長時間曝曬於空氣中容易開裂，埋入泥水中能保持木質水分平衡，是古人的智慧與藏船巧思。",
+                illustration: `
+                    <div class="relative flex items-center justify-center p-6 bg-amber-50 rounded-2xl border-2 border-dashed border-festival-gold/30">
+                        <div class="text-center">
+                            <span class="text-7xl block animate-bounce mb-3">🎨</span>
+                            <span class="inline-block bg-festival-red text-white text-xs px-2.5 py-1 rounded-full font-bold">硃砂點睛 龍魂覺醒</span>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "2. 採青與參神 (Green Gathering)",
+                emoji: "🌿",
+                desc: "開光點睛後，龍舟隊伍會划著龍舟，前往附近的廟宇（如天后廟、洪聖廟、關帝廟等）焚香拜神、行三叩首禮參神祈福。隨後，會前往特定的草叢或榕樹上，採集榕樹嫩葉、竹葉或青草（稱為「採青」），並由長輩將青草插在龍頭的口中或龍角上，象徵龍已得到神力護佑，並充滿生機與吉祥寓意。",
+                fact: "「青」代表著大自然的蓬勃朝氣、生機勃勃，在傳統民俗中亦具有辟邪、消災、招來吉運的重要功效。",
+                illustration: `
+                    <div class="relative flex items-center justify-center p-6 bg-emerald-50 rounded-2xl border-2 border-dashed border-festival-green/30">
+                        <div class="text-center">
+                            <span class="text-7xl block animate-pulse mb-3">🌿</span>
+                            <span class="inline-block bg-festival-green text-white text-xs px-2.5 py-1 rounded-full font-bold">榕葉披掛 降祥賜福</span>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "3. 奮勇競渡 (The Grand Regatta)",
+                emoji: "🛶",
+                desc: "端午當天最核心的焦點！伴隨一聲令下，湖面、江面上鑼鼓喧天，百槳齊飛。選手們必須完全聽從船中央「鼓手」發出的鼓點節奏，心無旁鶩、整齊划一地奮力划槳，衝刺向終點。龍舟競技不僅是一場極具感染力的體育運動，更是一次對於團隊默契、信任與文化認同的極致洗禮。",
+                fact: "船上的靈魂——鼓手：控制划手節奏。而船尾的舵手，則需在巨浪和高速中，穩控船身方向防止翻船，對技術要求極高。",
+                illustration: `
+                    <div class="relative flex items-center justify-center p-6 bg-sky-50 rounded-2xl border-2 border-dashed border-sky-300">
+                        <div class="text-center">
+                            <span class="text-7xl block animate-boat mb-3">🥁</span>
+                            <span class="inline-block bg-festival-blue text-white text-xs px-2.5 py-1 rounded-full font-bold">百槳齊發 同心衝線</span>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "4. 藏龍妥存 (Dragon Preservation)",
+                emoji: "⚓",
+                desc: "端午佳節熱鬧過後，龍舟任務完成，這時要舉行「送神」或「藏龍」儀式。人們會移除龍頭、龍尾並妥善保管在宗祠或廟宇內。接著，將沉重的船身重新沉入河底深處的泥沙之中，或拖上岸安置在專門建造的「龍舟棚」內避風遮陽。這樣反覆保存，能確保木料不致乾裂、腐爛，静待明年端午再次喚醒。",
+                fact: "有些地區藏龍時，還會舉辦「龍船飯」聚餐，款待辛苦的龍舟隊員與鄉親，凝聚整個社區村民的感情、維繫傳統宗族紐帶。",
+                illustration: `
+                    <div class="relative flex items-center justify-center p-6 bg-stone-100 rounded-2xl border-2 border-dashed border-stone-300">
+                        <div class="text-center">
+                            <span class="text-7xl block mb-3">😴</span>
+                            <span class="inline-block bg-stone-700 text-white text-xs px-2.5 py-1 rounded-full font-bold">洗淨泥封 明年再聚</span>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function switchRitual(index) {
+            // 切換按鈕狀態樣式
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                if (idx === index) {
+                    btn.className = "tab-btn p-4 rounded-xl font-serif text-lg font-bold border transition-all duration-300 flex flex-col items-center gap-2 bg-festival-red text-white border-festival-red shadow-lg transform -translate-y-1";
+                } else {
+                    btn.className = "tab-btn p-4 rounded-xl font-serif text-lg font-bold border transition-all duration-300 flex flex-col items-center gap-2 bg-white text-slate-700 border-stone-200 hover:border-festival-red/50 shadow-sm";
+                }
+            });
+
+            // 更新詳情
+            const r = rituals[index];
+            const contentDiv = document.getElementById('ritual-content');
+            
+            contentDiv.innerHTML = `
+                <div class="md:col-span-3 space-y-4">
+                    <h3 class="font-serif font-black text-2xl text-festival-red flex items-center gap-2">
+                        <span>${r.emoji}</span> ${r.title}
+                    </h3>
+                    <p class="text-slate-700 text-base leading-relaxed">
+                        ${r.desc}
+                    </p>
+                    <div class="mt-4 p-4 bg-amber-50 rounded-xl border border-festival-gold/20">
+                        <div class="text-xs font-bold text-festival-gold tracking-wider uppercase mb-1">💡 文化冷知識：</div>
+                        <p class="text-slate-600 text-sm leading-relaxed">${r.fact}</p>
+                    </div>
+                </div>
+                <div class="md:col-span-2 mt-6 md:mt-0">
+                    ${r.illustration}
+                </div>
+            `;
+        }
+
+        // 預設載入第一個
+        switchRitual(0);
+    </script>
+
+    <!-- 知識問答邏輯 -->
+    <script>
+        const quizData = [
+            {
+                question: "傳統端午節除了紀念愛國詩人屈原，划龍舟活動最主要的初衷與祈求是什麼？",
+                answers: [
+                    "祈求五穀豐收、驅邪避毒與消除瘟疫",
+                    "為了展示宗族之間的捕魚技巧",
+                    "單純慶祝夏至的到來",
+                    "宮廷內部的娛樂活動"
+                ],
+                correct: 0,
+                explain: "端午佳節時逢五月「惡月」，氣候炎熱且毒蟲肆虐。古人划龍舟與敲擊大鼓鑼聲，正是為了驅邪避惡、送走瘟神，祈求風調雨順、保佑平安。"
+            },
+            {
+                question: "在龍舟活動中，把煮熟的榕樹葉或新鮮竹葉掛在龍頭上的傳統儀式，稱為什麼？",
+                answers: [
+                    "起龍",
+                    "採青",
+                    "祭江",
+                    "藏龍"
+                ],
+                correct: 1,
+                explain: "「採青」是指龍舟開光點睛後，龍舟隊划行到指定地點採集榕葉或青草，插在龍頭上象徵「萬物逢春、生機蓬勃」與得到神明保佑。"
+            },
+            {
+                question: "在香港大澳或長洲等地區，長輩們相信「游龍船水」有什麼好處？",
+                answers: [
+                    "能讓皮膚曬得更均勻漂亮",
+                    "可以幫助減肥瘦身",
+                    "帶有「龍氣」，能強身健體並招來好運",
+                    "可以直接在水裡學會游泳"
+                ],
+                correct: 2,
+                explain: "「游龍船水」是極具地方特色的非遺民俗。相傳龍舟划過的水域帶有神聖的「龍氣」，能辟邪、去霉運並強健體魄、保佑來年無病無痛。"
+            },
+            {
+                question: "端午過後，村民將龍舟卸下龍頭、龍尾，並重新沉入水底或泥中的儀式稱為？",
+                answers: [
+                    "起龍",
+                    "遊湖",
+                    "藏龍",
+                    "謝神"
+                ],
+                correct: 2,
+                explain: "端午競渡結束後，人們會把龍舟船身洗淨，沉入富含泥沙的河底或池中保護，稱為「藏龍」。這項習俗可以防止珍貴的龍木乾裂與損壞。"
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+        let quizScore = 0;
+
+        const quizContainer = document.getElementById('quiz-container');
+        const feedbackEl = document.getElementById('quiz-feedback');
+        const nextBtn = document.getElementById('quiz-next-btn');
+        const stepText = document.getElementById('quiz-step-text');
+        const progressBar = document.getElementById('quiz-progress-bar');
+
+        function loadQuestion() {
+            feedbackEl.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            
+            // 更新進度條
+            const progress = ((currentQuestionIdx) / quizData.length) * 100;
+            progressBar.style.width = progress + "%";
+
+            if (currentQuestionIdx >= quizData.length) {
+                showResults();
+                return;
+            }
+
+            stepText.innerText = `第 ${currentQuestionIdx + 1} / ${quizData.length} 題`;
+            const q = quizData[currentQuestionIdx];
+
+            let answersHtml = q.answers.map((answer, index) => `
+                <button onclick="checkAnswer(${index})" class="quiz-ans-btn w-full text-left p-4 rounded-xl border border-stone-200 hover:border-festival-red hover:bg-festival-red/5 font-medium transition-all duration-200 flex items-center space-x-3">
+                    <span class="w-7 h-7 flex items-center justify-center rounded-full bg-stone-100 text-stone-600 font-bold text-sm">${String.fromCharCode(65 + index)}</span>
+                    <span class="text-slate-700">${answer}</span>
+                </button>
+            `).join('');
+
+            quizContainer.innerHTML = `
+                <h3 class="font-serif font-bold text-xl text-slate-800 mb-6">${q.question}</h3>
+                <div class="space-y-3">
+                    ${answersHtml}
+                </div>
+            `;
+        }
+
+        function checkAnswer(selectedIndex) {
+            // 停用所有按鈕防止重複點擊
+            document.querySelectorAll('.quiz-ans-btn').forEach(btn => btn.disabled = true);
+
+            const q = quizData[currentQuestionIdx];
+            const isCorrect = selectedIndex === q.correct;
+
+            if (isCorrect) {
+                quizScore++;
+                feedbackEl.className = "mt-6 p-4 rounded-xl font-medium text-center bg-emerald-50 text-emerald-800 border border-emerald-200 block";
+                feedbackEl.innerHTML = `🎉 答對了！非常優秀！<br><span class="text-xs font-normal text-slate-600">${q.explain}</span>`;
+            } else {
+                feedbackEl.className = "mt-6 p-4 rounded-xl font-medium text-center bg-rose-50 text-rose-800 border border-rose-200 block";
+                feedbackEl.innerHTML = `❌ 答錯囉！再接再厲！<br><span class="text-xs font-normal text-slate-600">正確答案是：<strong>${q.answers[q.correct]}</strong>。<br>${q.explain}</span>`;
+            }
+
+            // 反白正確和錯誤的選項
+            document.querySelectorAll('.quiz-ans-btn').forEach((btn, idx) => {
+                if (idx === q.correct) {
+                    btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-700');
+                } else if (idx === selectedIndex) {
+                    btn.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-700');
+                }
+            });
+
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIdx++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            progressBar.style.width = "100%";
+            stepText.innerText = "挑戰結束！";
+            
+            let finalRating = "";
+            let medal = "";
+            if (quizScore === quizData.length) {
+                finalRating = "太厲害了！你完全掌握了划龍舟文化的精髓！簡直是龍舟大師！🏆";
+                medal = "🏅";
+            } else if (quizScore >= 2) {
+                finalRating = "表現非常棒！對龍舟民俗與非遺知識相當了解！💪";
+                medal = "🥈";
+            } else {
+                finalRating = "沒關係，重新閱讀網頁後再來挑戰，一定能拿到好成績！🌾";
+                medal = "🥉";
+            }
+
+            quizContainer.innerHTML = `
+                <div class="text-center py-8 space-y-6">
+                    <span class="text-7xl block animate-bounce">${medal}</span>
+                    <h3 class="font-serif font-bold text-2xl text-slate-800">文化挑戰完成！</h3>
+                    <p class="text-4xl font-black text-festival-red">得分: ${quizScore} / ${quizData.length}</p>
+                    <p class="text-slate-600 max-w-md mx-auto leading-relaxed">${finalRating}</p>
+                    <button onclick="restartQuiz()" class="mt-4 bg-festival-green hover:bg-emerald-800 text-white font-bold py-3 px-8 rounded-full transition-all duration-300">
+                        重新挑戰
+                    </button>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuestionIdx = 0;
+            quizScore = 0;
+            loadQuestion();
+        }
+
+        // 初始化
+        loadQuestion();
+    </script>
+</body>
+</html>
